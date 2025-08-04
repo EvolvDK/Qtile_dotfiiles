@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# --- Options ---
+shutdown="  "
+reboot="  "
+suspend="  "
+lock="  "
+logout="  "
+
+# --- Variables ---
+theme_path="$HOME/.config/rofi/themes/powermenu.rasi"
+
+# --- Logique ---
+# Récupérer le choix de l'utilisateur
+chosen=$(echo -e "$shutdown\n$reboot\n$suspend\n$lock\n$logout" | rofi -dmenu -i -theme "$theme_path")
+
+# Exécuter l'action correspondante
+case ${chosen} in
+    "$shutdown")
+        systemctl poweroff
+        ;;
+    "$reboot")
+        systemctl reboot
+        ;;
+    "$suspend")
+        systemctl suspend
+        ;;
+    "$lock")
+        betterlockscreen -l
+        ;;
+    "$logout")
+        $HOME/.local/bin/qtile cmd-obj -o cmd -f shutdown
+        ;;
+esac
